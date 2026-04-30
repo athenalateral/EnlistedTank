@@ -417,7 +417,7 @@ GameObject:
   - component: {fileID: 3729157623195431228}
   m_Layer: 8
   m_Name: _Hero
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -461,6 +461,7 @@ MonoBehaviour:
   weapons:
   - {fileID: 3097793680384308843}
   _shieldLevel: 2
+  turret: {fileID: 0}
   shieldRenderer: {fileID: 3729157622416263671}
   offsetMin: 0
   offsetMax: 0.8

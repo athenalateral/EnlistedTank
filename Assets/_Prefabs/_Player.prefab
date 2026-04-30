@@ -507,7 +507,7 @@ GameObject:
   - component: {fileID: 6186614916413180573}
   m_Layer: 8
   m_Name: _Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -543,8 +543,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 30
-  rollMult: -45
-  pitchMult: 30
+  rollMult: -10
+  pitchMult: 10
   projectilePrefab: {fileID: 6459924783203265302, guid: 51d72156b26db694aafba88c2d6ad0a6,
     type: 3}
   projectileSpeed: 40
