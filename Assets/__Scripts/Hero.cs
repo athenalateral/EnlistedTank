@@ -2,6 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
+
 public class Hero : MonoBehaviour
 {
     static public Hero  S { get; private set; }
@@ -13,6 +15,7 @@ public class Hero : MonoBehaviour
     public GameObject projectilePrefab;
     public float projectileSpeed = 40;
     public Weapon[] weapons;
+    public bool isInvincible = true;
 
     [Header("Dynamic")] [Range(0,4)] [SerializeField]
     private float _shieldLevel = 1;
@@ -89,11 +92,13 @@ public class Hero : MonoBehaviour
         PowerUp pUp = go.GetComponent<PowerUp>();
         ProjectileEnemy proj = go.GetComponent<ProjectileEnemy>();
 
+
+        // addded this to make the herro invincible
         if (enemy != null) {
-            shieldLevel--;
-        } 
+            if (!isInvincible) shieldLevel--;
+        }
         else if (proj != null) {
-            shieldLevel -= proj.damage;
+            if (!isInvincible) shieldLevel -= proj.damage;
             Destroy(proj.gameObject);
         } 
         else if (pUp != null) {
@@ -167,6 +172,8 @@ public class Hero : MonoBehaviour
 
     public void TakeDamage(float dmg)
     {
+        // add this to make Hero Invincible
+        if (isInvincible) return;
         float finalDamage = dmg;
 
 

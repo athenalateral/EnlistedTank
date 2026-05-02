@@ -2,39 +2,32 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum eWeaponType {
+public enum eWeaponType
+{
     none,
     blaster,
     spread,
     phaser,
     missile,
     laser,
-    shield 
+    shield
 }
 
 [System.Serializable]
-public class WeaponDefinition {
+public class WeaponDefinition
+{
     public eWeaponType type = eWeaponType.none;
-    [Tooltip("Letter to show on the PowerUp Cube")]
     public string letter;
-    [Tooltip("Color of PowerUp Cube")]
     public Color powerUpColor = Color.white;
-    [Tooltip("Prefab of Weapon model that is attached to the Player Ship")]
     public GameObject weaponModelPrefab;
-    [Tooltip("Prefab of projectile that is fired")]
     public GameObject projectilePrefab;
-    [Tooltip("Color of the Projectile that is fired")]
     public Color projectileColor = Color.white;
-    [Tooltip("Damage caused when a single Projectile hits an Enemy")]
+
     public float damageOnHit = 0;
-    [Tooltip("Damage caused per second by the Laser [Not implemented]")]
     public float damagePerSec = 0;
-    [Tooltip("Seconds to delay between shots")]
+
     public float delayBetweenShots = 0;
-    [Tooltip("Velocity of individual Projectiles")]
     public float velocity = 50;
-
-
 }
 
 public class Weapon : MonoBehaviour
@@ -43,92 +36,245 @@ public class Weapon : MonoBehaviour
 
     [Header("Dynamic")]
     [SerializeField]
-    [Tooltip("Setting this manually while playing does not work properly.")]
     private eWeaponType _type = eWeaponType.none;
+
     public WeaponDefinition def;
     public float nextShotTime;
 
     private GameObject weaponModel;
     private Transform shotPointTrans;
 
-    void Start() {
-        if (PROJECTILE_ANCHOR == null) {
+    private GameObject activeShield;
+    private GameObject activeLaser;
+
+    void Start()
+    {
+        if (PROJECTILE_ANCHOR == null)
+        {
             GameObject go = new GameObject("_ProjectileAnchor");
             PROJECTILE_ANCHOR = go.transform;
         }
 
         shotPointTrans = transform.GetChild(0);
 
-        SetType( _type );
+        SetType(_type);
 
         Hero hero = GetComponentInParent<Hero>();
         if (hero != null) hero.fireEvent += Fire;
     }
 
-    public eWeaponType type {
-        get { return(_type);}
-        set { SetType(value);}
+    public eWeaponType type
+    {
+        get { return _type; }
+        set { SetType(value); }
     }
 
-    public void SetType( eWeaponType wt ) {
+    public void SetType(eWeaponType wt)
+    {
         _type = wt;
-        if (type == eWeaponType.none) {
-            this.gameObject.SetActive(false);
+
+        if (type == eWeaponType.none)
+        {
+            gameObject.SetActive(false);
             return;
-        } else {
-            this.gameObject.SetActive(true);
+        }
+        else
+        {
+            gameObject.SetActive(true);
         }
 
         def = Main.GET_WEAPON_DEFINITION(_type);
 
         if (weaponModel != null) Destroy(weaponModel);
-        weaponModel = Instantiate<GameObject>(def.weaponModelPrefab, transform);
+
+        weaponModel = Instantiate(def.weaponModelPrefab, transform);
         weaponModel.transform.localPosition = Vector3.zero;
+        weaponModel.transform.localRotation = Quaternion.identity;
         weaponModel.transform.localScale = Vector3.one;
 
         nextShotTime = 0;
     }
 
-    private void Fire() {
-        if ( !gameObject.activeInHierarchy ) return;
-        if ( Time.time < nextShotTime ) return;
+    private void Fire()
+    {
+        if (!gameObject.activeInHierarchy) return;
+        if (Time.time < nextShotTime) return;
 
         ProjectileHero p;
         Vector3 vel = shotPointTrans.up * def.velocity;
 
-        switch (type) {
+        switch (type)
+        {
+            // =================================================
+            // BLASTER
+            // =================================================
             case eWeaponType.blaster:
                 p = MakeProjectile();
                 p.vel = vel;
                 break;
 
+            // =================================================
+            // SPREAD
+            // =================================================
             case eWeaponType.spread:
+
                 p = MakeProjectile();
                 p.vel = vel;
 
                 p = MakeProjectile();
-                p.transform.rotation = shotPointTrans.rotation * Quaternion.Euler(0, 0, 10);
-                p.vel = p.transform.rotation * Vector3.up * def.velocity;
+                p.transform.rotation =
+                    shotPointTrans.rotation *
+                    Quaternion.Euler(0, 0, 12);
+                p.vel = p.transform.up * def.velocity;
 
                 p = MakeProjectile();
-                p.transform.rotation = shotPointTrans.rotation * Quaternion.Euler(0, 0, -10);
-                p.vel = p.transform.rotation * Vector3.up * def.velocity;
+                p.transform.rotation =
+                    shotPointTrans.rotation *
+                    Quaternion.Euler(0, 0, -12);
+                p.vel = p.transform.up * def.velocity;
+
+                break;
+
+            // =================================================
+            // PHASER (rapid twin shots)
+            // =================================================
+            case eWeaponType.phaser:
+
+                p = MakeProjectile(new Vector3(-0.25f, 0, 0));
+                p.vel = vel;
+
+                p = MakeProjectile(new Vector3(0.25f, 0, 0));
+                p.vel = vel;
+
+                break;
+
+            // =================================================
+            // MISSILE (slow heavy shot)
+            // =================================================
+            case eWeaponType.missile:
+
+                p = MakeProjectile();
+                p.vel = vel * 0.65f;
+
+                Rigidbody rb = p.GetComponent<Rigidbody>();
+                if (rb != null)
+                    rb.angularVelocity = Vector3.forward * -180f;
+
+                break;
+
+            // =================================================
+            // LASER (beam)
+            // =================================================
+            case eWeaponType.laser:
+
+                FireLaser();
+                break;
+
+            // =================================================
+            // SHIELD
+            // =================================================
+            case eWeaponType.shield:
+
+                ActivateShield();
                 break;
         }
+
+        nextShotTime = Time.time + def.delayBetweenShots;
     }
 
-    private ProjectileHero MakeProjectile() {
-        GameObject go;
-        go = Instantiate<GameObject>(def.projectilePrefab, PROJECTILE_ANCHOR);
+    // =========================================================
+    // PROJECTILES
+    // =========================================================
+    private ProjectileHero MakeProjectile()
+    {
+        return MakeProjectile(Vector3.zero);
+    }
+
+    private ProjectileHero MakeProjectile(Vector3 localOffset)
+    {
+        GameObject go =
+            Instantiate(def.projectilePrefab, PROJECTILE_ANCHOR);
+
         ProjectileHero p = go.GetComponent<ProjectileHero>();
 
         Vector3 pos = shotPointTrans.position;
+        pos += transform.TransformDirection(localOffset);
         pos.z = 0;
+
         p.transform.position = pos;
         p.transform.rotation = shotPointTrans.rotation;
 
         p.type = type;
-        nextShotTime = Time.time + def.delayBetweenShots;
-        return(p);
+
+        return p;
+    }
+
+    // =========================================================
+    // LASER
+    // =========================================================
+    void FireLaser()
+    {
+        if (activeLaser != null) Destroy(activeLaser);
+
+        activeLaser = GameObject.CreatePrimitive(PrimitiveType.Cube);
+        activeLaser.name = "LaserBeam";
+
+        activeLaser.transform.SetParent(PROJECTILE_ANCHOR);
+
+        activeLaser.transform.position =
+            shotPointTrans.position + shotPointTrans.up * 5f;
+
+        activeLaser.transform.rotation =
+            shotPointTrans.rotation;
+
+        activeLaser.transform.localScale =
+            new Vector3(0.25f, 10f, 0.25f);
+
+        Destroy(activeLaser.GetComponent<Collider>());
+
+        Renderer r = activeLaser.GetComponent<Renderer>();
+        if (r != null) r.material.color = def.projectileColor;
+
+        Destroy(activeLaser, 0.15f);
+    }
+
+    // =========================================================
+    // SHIELD
+    // =========================================================
+    void ActivateShield()
+    {
+        if (activeShield != null) return;
+
+        activeShield = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        activeShield.name = "Shield";
+
+        activeShield.transform.SetParent(transform.parent);
+        activeShield.transform.localPosition = Vector3.zero;
+        activeShield.transform.localScale = Vector3.one * 2.2f;
+
+        Destroy(activeShield.GetComponent<Collider>());
+
+        Renderer r = activeShield.GetComponent<Renderer>();
+        if (r != null)
+        {
+            r.material.color = new Color(
+                def.projectileColor.r,
+                def.projectileColor.g,
+                def.projectileColor.b,
+                0.4f
+            );
+        }
+
+        StartCoroutine(ShieldRoutine());
+    }
+
+    IEnumerator ShieldRoutine()
+    {
+        yield return new WaitForSeconds(4f);
+
+        if (activeShield != null)
+            Destroy(activeShield);
+
+        activeShield = null;
     }
 }

@@ -122,8 +122,9 @@ public class Enemy_3 : Enemy
             // make warning pulse
             if (warning != null)
             {
+                float baseSize = strikeRadius * 2f;
                 float pulse = 1f + Mathf.Sin(Time.time * 10f) * 0.15f;
-                warning.transform.localScale = Vector3.one * pulse;
+                warning.transform.localScale = Vector3.one * baseSize * pulse;
             }
 
             yield return null;
