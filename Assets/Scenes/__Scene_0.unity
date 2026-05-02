@@ -614,7 +614,7 @@ MonoBehaviour:
   weaponDefinitions:
   - type: 1
     letter: B
-    powerUpColor: {r: 1, g: 1, b: 1, a: 1}
+    powerUpColor: {r: 1, g: 0.7137255, b: 0, a: 1}
     weaponModelPrefab: {fileID: 1623079835978201247, guid: 04a4151bd0944f949a72ce2202e040d0,
       type: 3}
     projectilePrefab: {fileID: 6459924783203265302, guid: 51d72156b26db694aafba88c2d6ad0a6,
@@ -636,6 +636,42 @@ MonoBehaviour:
     damagePerSec: 0
     delayBetweenShots: 0.4
     velocity: 50
+  - type: 3
+    letter: P
+    powerUpColor: {r: 1, g: 0, b: 0.03997326, a: 1}
+    weaponModelPrefab: {fileID: 919132149155446097, guid: 8b6e5debbe11f9241ade9814e3d16d70,
+      type: 3}
+    projectilePrefab: {fileID: 6459924783203265302, guid: 51d72156b26db694aafba88c2d6ad0a6,
+      type: 3}
+    projectileColor: {r: 1, g: 0, b: 0.039215688, a: 1}
+    damageOnHit: 1
+    damagePerSec: 0
+    delayBetweenShots: 0.05
+    velocity: 50
+  - type: 4
+    letter: M
+    powerUpColor: {r: 0.017065525, g: 0, b: 1, a: 1}
+    weaponModelPrefab: {fileID: 919132149155446097, guid: 8b6e5debbe11f9241ade9814e3d16d70,
+      type: 3}
+    projectilePrefab: {fileID: 6459924783203265302, guid: 4127b3e971e923c448309d58ec8f4fed,
+      type: 3}
+    projectileColor: {r: 0.015686275, g: 0, b: 1, a: 1}
+    damageOnHit: 3
+    damagePerSec: 0
+    delayBetweenShots: 0.6
+    velocity: 50
+  - type: 5
+    letter: L
+    powerUpColor: {r: 1, g: 0.9728835, b: 0, a: 1}
+    weaponModelPrefab: {fileID: 919132149155446097, guid: 8b6e5debbe11f9241ade9814e3d16d70,
+      type: 3}
+    projectilePrefab: {fileID: 6459924783203265302, guid: d350509b3f0b55b4fa3ab8333b811d13,
+      type: 3}
+    projectileColor: {r: 1, g: 0.9725491, b: 0, a: 1}
+    damageOnHit: 1
+    damagePerSec: 1
+    delayBetweenShots: 0
+    velocity: 50
   - type: 6
     letter: O
     powerUpColor: {r: 0, g: 1, b: 0, a: 1}
@@ -647,7 +683,7 @@ MonoBehaviour:
     damagePerSec: 0
     delayBetweenShots: 0
     velocity: 50
-  powerUpFrequency: 01000000010000000200000006000000
+  powerUpFrequency: 01000000010000000200000003000000040000000500000006000000
   scoreText: {fileID: 1999471591}
   musicSource: {fileID: 1364772180}
   backgroundMusic: {fileID: 8300000, guid: 09afb7bb88463b14493054448f42ed30, type: 3}
