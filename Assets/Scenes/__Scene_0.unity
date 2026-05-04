@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -589,23 +589,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spawnEnemies: 1
-  prefabEnemies:
-  - {fileID: 3878521705369907401, guid: 6e22215cd6b319940b5b90d6409b6bbd, type: 3}
-  - {fileID: 3878521705369907401, guid: 6e22215cd6b319940b5b90d6409b6bbd, type: 3}
-  - {fileID: 3878521705369907401, guid: 6e22215cd6b319940b5b90d6409b6bbd, type: 3}
-  - {fileID: 3878521705369907401, guid: 6e22215cd6b319940b5b90d6409b6bbd, type: 3}
-  - {fileID: 3878521705369907401, guid: 6e22215cd6b319940b5b90d6409b6bbd, type: 3}
-  - {fileID: 3878521705369907401, guid: 6e22215cd6b319940b5b90d6409b6bbd, type: 3}
-  - {fileID: 3319825933102930435, guid: ac8336763c0c047aca9a469c10d3f448, type: 3}
-  - {fileID: 3319825933102930435, guid: ac8336763c0c047aca9a469c10d3f448, type: 3}
-  - {fileID: 3319825933102930435, guid: ac8336763c0c047aca9a469c10d3f448, type: 3}
-  - {fileID: 4070209521177695457, guid: 10ae278da906f451594d7989d76b6d15, type: 3}
-  - {fileID: 4070209521177695457, guid: 10ae278da906f451594d7989d76b6d15, type: 3}
-  - {fileID: 4070209521177695457, guid: 10ae278da906f451594d7989d76b6d15, type: 3}
-  - {fileID: 6217192625371338093, guid: 8b3b585cc9dbb43ff97ab0579e85fd71, type: 3}
-  - {fileID: 6217192625371338093, guid: 8b3b585cc9dbb43ff97ab0579e85fd71, type: 3}
-  - {fileID: 6217192625371338093, guid: 8b3b585cc9dbb43ff97ab0579e85fd71, type: 3}
-  - {fileID: 9185519998980853174, guid: 486b535a9aae8446f9346d286631b31d, type: 3}
+  prefabEnemies: []
   enemySpawnPerSecond: 0.5
   enemyInsetDefault: 1.5
   gameRestartDelay: 2
@@ -687,6 +671,22 @@ MonoBehaviour:
   scoreText: {fileID: 1999471591}
   musicSource: {fileID: 1364772180}
   backgroundMusic: {fileID: 8300000, guid: 09afb7bb88463b14493054448f42ed30, type: 3}
+  stages:
+  - enemiesForThisStage:
+    - {fileID: 919132149155446097, guid: ae3a657191efe7040b52cc85f1d490eb, type: 3}
+    - {fileID: 919132149155446097, guid: 17b565173ef973647a7c2db144c0e2b4, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    enemySpawnPerSecond: 0
+    bossPrefab: {fileID: 3878521705369907401, guid: 6e22215cd6b319940b5b90d6409b6bbd,
+      type: 3}
+    stageLength: 0
+  - enemiesForThisStage: []
+    enemySpawnPerSecond: 0
+    bossPrefab: {fileID: 0}
+    stageLength: 0
+  backgroundRenderer: {fileID: 0}
 --- !u!114 &963194232
 MonoBehaviour:
   m_ObjectHideFlags: 0
