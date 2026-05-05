@@ -23,6 +23,8 @@ public class Hero : MonoBehaviour
     public delegate void WeaponFireDelegate();
     public event WeaponFireDelegate fireEvent;
 
+    public event WeaponFireDelegate stopFiringEvent;
+
     [Header("Turret")]
     public Transform turret;
 
@@ -30,11 +32,6 @@ public class Hero : MonoBehaviour
     public Renderer shieldRenderer;
     public float offsetMin = 0f;
     public float offsetMax = 0.8f;
-
-    [Header("Audio")]
-    public AudioSource audioSource;
-    public AudioClip shootSFX;
-
     void Awake()
     {
         if (S == null)
@@ -65,14 +62,12 @@ public class Hero : MonoBehaviour
 
         AimTurret();
 
-        if (Input.GetMouseButton(0) && fireEvent != null)
+        if (Input.GetMouseButton(0))
         {
-            fireEvent();
-
-            if (shootSFX != null && !audioSource.isPlaying)
-            {
-                audioSource.PlayOneShot(shootSFX);
-            }
+            if(fireEvent != null) fireEvent();
+        }
+        else{
+            if(stopFiringEvent != null) stopFiringEvent();
         }
     }
 
@@ -128,11 +123,12 @@ public class Hero : MonoBehaviour
     public float shieldLevel {
         get { return ( _shieldLevel ); }
         private set {
-            _shieldLevel = Mathf.Clamp( value, 0, 5 );
+            _shieldLevel = Mathf.Min( value, 4);
 
             UpdateShieldVisual();
 
-            if (_shieldLevel <= 0) {
+            if (_shieldLevel < 0) {
+                if(stopFiringEvent != null) stopFiringEvent();
                 Destroy(this.gameObject);
                 Main.HERO_DIED();
             }

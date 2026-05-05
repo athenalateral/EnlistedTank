@@ -413,6 +413,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fadeInTime: 0.75
+--- !u!82 &311400277 stripped
+AudioSource:
+  m_CorrespondingSourceObject: {fileID: 4796538234227952306, guid: 009fce6c1e31fac44b050fe0fc354be5,
+    type: 3}
+  m_PrefabInstance: {fileID: 7298482821650518824}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &705507993
 GameObject:
   m_ObjectHideFlags: 0
@@ -774,7 +780,7 @@ MonoBehaviour:
     damagePerSec: 0
     delayBetweenShots: 0
     velocity: 50
-  powerUpFrequency: 01000000010000000200000003000000040000000500000006000000
+  powerUpFrequency: 05000000050000000500000005000000010000000100000001000000
   scoreText: {fileID: 1999471591}
   musicSource: {fileID: 1364772180}
   backgroundMusic: {fileID: 8300000, guid: 09afb7bb88463b14493054448f42ed30, type: 3}
@@ -1258,6 +1264,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4796538234227952306, guid: 009fce6c1e31fac44b050fe0fc354be5,
+        type: 3}
+      propertyPath: m_audioClip
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 5541246770462428618, guid: 009fce6c1e31fac44b050fe0fc354be5,
+        type: 3}
+      propertyPath: audioSource
+      value: 
+      objectReference: {fileID: 311400277}
+    - target: {fileID: 5541246770462428618, guid: 009fce6c1e31fac44b050fe0fc354be5,
+        type: 3}
+      propertyPath: fireingSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 4cb9a633c227aa744ae7d58f4c5214e3, type: 3}
+    - target: {fileID: 5541246770462428618, guid: 009fce6c1e31fac44b050fe0fc354be5,
+        type: 3}
+      propertyPath: singleFiringSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 4cb9a633c227aa744ae7d58f4c5214e3, type: 3}
+    - target: {fileID: 5541246770462428618, guid: 009fce6c1e31fac44b050fe0fc354be5,
+        type: 3}
+      propertyPath: continuousFiringSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 6653b748c16ad11408d47924f7d9f914, type: 3}
     - target: {fileID: 6186614916413180569, guid: 009fce6c1e31fac44b050fe0fc354be5,
         type: 3}
       propertyPath: m_Name

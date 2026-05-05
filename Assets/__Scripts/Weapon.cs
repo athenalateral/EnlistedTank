@@ -34,6 +34,11 @@ public class Weapon : MonoBehaviour
 {
     static public Transform PROJECTILE_ANCHOR;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip singleFiringSound;
+    public AudioClip continuousFiringSound;
+
     [Header("Dynamic")]
     [SerializeField]
     private eWeaponType _type = eWeaponType.none;
@@ -60,16 +65,15 @@ public class Weapon : MonoBehaviour
         SetType(_type);
 
         Hero hero = GetComponentInParent<Hero>();
-        if (hero != null) hero.fireEvent += Fire;
+        if (hero != null){
+            hero.fireEvent += Fire;
+            hero.stopFiringEvent += StopFiring;
+        }
     }
 
     void Update()
     {
-        if (activeLaser != null && type != eWeaponType.laser)
-        {
-            Destroy(activeLaser);
-            activeLaser = null;
-        }
+        if (type != eWeaponType.laser) DestoryLaser();
     }
 
     public eWeaponType type
@@ -191,6 +195,10 @@ public class Weapon : MonoBehaviour
         nextShotTime = Time.time + def.delayBetweenShots;
     }
 
+    private void StopFiring(){
+        if(type == eWeaponType.laser) DestoryLaser();
+    }
+
     // =========================================================
     // PROJECTILES
     // =========================================================
@@ -201,6 +209,8 @@ public class Weapon : MonoBehaviour
 
     private ProjectileHero MakeProjectile(Vector3 localOffset)
     {
+        // Play firing sound
+        PlaySingleFiringSound();
         GameObject go =
             Instantiate(def.projectilePrefab, PROJECTILE_ANCHOR);
 
@@ -230,6 +240,9 @@ public class Weapon : MonoBehaviour
         // Create beam once
         if (activeLaser == null)
         {
+            // Turn on continuous firing sound
+            PlayContinuousFiringSound(true);
+
             activeLaser = GameObject.CreatePrimitive(PrimitiveType.Cube);
             activeLaser.name = "LaserBeam";
             activeLaser.transform.SetParent(PROJECTILE_ANCHOR);
@@ -293,6 +306,14 @@ public class Weapon : MonoBehaviour
         }
     }
 
+    void DestoryLaser(){
+        if (activeLaser != null){
+            PlayContinuousFiringSound(false);
+            Destroy(activeLaser);
+            activeLaser = null;
+        }
+    }
+
     // =========================================================
     // SHIELD
     // =========================================================
@@ -331,5 +352,32 @@ public class Weapon : MonoBehaviour
             Destroy(activeShield);
 
         activeShield = null;
+    }
+
+    // Plays the single firing sound once (can play while other
+    // sounds are playing)
+    void PlaySingleFiringSound(){
+        if(audioSource == null) return;
+        audioSource.PlayOneShot(singleFiringSound);
+    }
+
+    // Plays the continuous fireing sound on loop if setPlaying
+    // is set to true. If setPlaying is set to false, then it
+    // stops the continuous looping sound.
+    // NOTE: It isn't recommended to use this to stop a looping
+    // sound while other oneshot plays are playing as it would
+    // stop them too.
+    void PlayContinuousFiringSound(bool setPlaying){
+        if(audioSource == null) return;
+        if(setPlaying){
+            audioSource.clip = continuousFiringSound;
+            audioSource.loop = true;
+            audioSource.Play();
+        }
+        else if(audioSource.clip == continuousFiringSound){
+            audioSource.Stop();
+            audioSource.clip = null;
+            audioSource.loop = false;
+        }
     }
 }
