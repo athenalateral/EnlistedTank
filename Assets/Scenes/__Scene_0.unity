@@ -705,12 +705,12 @@ MonoBehaviour:
   weaponDefinitions:
   - type: 1
     letter: B
-    powerUpColor: {r: 1, g: 0.7137255, b: 0, a: 1}
+    powerUpColor: {r: 1, g: 0.3419887, b: 0, a: 1}
     weaponModelPrefab: {fileID: 1623079835978201247, guid: 04a4151bd0944f949a72ce2202e040d0,
       type: 3}
     projectilePrefab: {fileID: 6459924783203265302, guid: 51d72156b26db694aafba88c2d6ad0a6,
       type: 3}
-    projectileColor: {r: 1, g: 0.71341777, b: 0, a: 1}
+    projectileColor: {r: 1, g: 0.34117648, b: 0, a: 1}
     damageOnHit: 1
     damagePerSec: 0
     delayBetweenShots: 0.2
@@ -741,12 +741,12 @@ MonoBehaviour:
     velocity: 50
   - type: 4
     letter: M
-    powerUpColor: {r: 0.017065525, g: 0, b: 1, a: 1}
+    powerUpColor: {r: 0, g: 0.38679248, b: 0.0039671483, a: 1}
     weaponModelPrefab: {fileID: 919132149155446097, guid: 8b6e5debbe11f9241ade9814e3d16d70,
       type: 3}
     projectilePrefab: {fileID: 6459924783203265302, guid: 4127b3e971e923c448309d58ec8f4fed,
       type: 3}
-    projectileColor: {r: 0.015686275, g: 0, b: 1, a: 1}
+    projectileColor: {r: 0, g: 0.3882353, b: 0.007843138, a: 1}
     damageOnHit: 3
     damagePerSec: 0
     delayBetweenShots: 0.6
@@ -765,11 +765,11 @@ MonoBehaviour:
     velocity: 50
   - type: 6
     letter: O
-    powerUpColor: {r: 0, g: 1, b: 0, a: 1}
+    powerUpColor: {r: 0, g: 0, b: 1, a: 1}
     weaponModelPrefab: {fileID: 919132149155446097, guid: 8b6e5debbe11f9241ade9814e3d16d70,
       type: 3}
     projectilePrefab: {fileID: 0}
-    projectileColor: {r: 0, g: 1, b: 0, a: 1}
+    projectileColor: {r: 0, g: 0, b: 1, a: 1}
     damageOnHit: 0
     damagePerSec: 0
     delayBetweenShots: 0
