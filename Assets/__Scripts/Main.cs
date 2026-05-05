@@ -29,6 +29,7 @@ public class Main : MonoBehaviour
     [Header("Audio")]
     public AudioSource musicSource;
     public AudioClip backgroundMusic;
+    public GameObject blackFadeOverlay;
 
     private int score = 0;
 
@@ -46,6 +47,18 @@ public class Main : MonoBehaviour
         foreach ( WeaponDefinition def in weaponDefinitions ) {
             WEAP_DICT[def.type] = def;
         }
+
+        // Ensure the overlay entity is active
+        // (is inactive by default so it isn't in the way in the editor)
+        if(blackFadeOverlay == null) return;
+        blackFadeOverlay.SetActive(true);
+    }
+
+    void Start(){
+        // Make the screen fade from black
+        FadeFromBlack fadeFromBlack = blackFadeOverlay.GetComponent<FadeFromBlack>();
+        if(fadeFromBlack == null) return;
+        fadeFromBlack.startFade();
     }
 
     public void SpawnEnemy() {
@@ -75,7 +88,7 @@ public class Main : MonoBehaviour
     }
 
     void Restart() {
-        SceneManager.LoadScene( "__Scene_0" );
+        SceneManager.LoadScene( "Restart_Screen" );
     }
 
     public void AddScore(int points) {
