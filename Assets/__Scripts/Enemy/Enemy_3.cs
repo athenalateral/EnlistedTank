@@ -12,7 +12,6 @@ public class Enemy_3 : Enemy
     [Header("Strike Attack")]
     public GameObject warningCirclePrefab;
     public GameObject bombPrefab;
-    public GameObject explosionPrefab;
 
     public float strikeRate = 3f;      // time between attacks
     public float strikeDelay = 1.2f;   // warning time / bomb travel time
@@ -94,95 +93,26 @@ public class Enemy_3 : Enemy
         float futureU = Mathf.Clamp01(uNow + futurePathOffset);
 
         Vector3 strikePos = Utils.Bezier(futureU, points);
-
+        
+        // Spawn warning circle
         GameObject warning = Instantiate(warningCirclePrefab);
         warning.transform.position = strikePos;
+        WarningCircle warningScript = warning.GetComponent<WarningCircle>();
+        if(warningScript != null){
+            warningScript.strikeDelay = strikeDelay;
+            warningScript.strikeRadius = strikeRadius;
+        }
 
-        StartCoroutine(BombStrike(strikePos, warning));
-    }
-
-    IEnumerator BombStrike(Vector3 strikePos, GameObject warning)
-    {
+        // Spawn bomb
         GameObject bomb = Instantiate(bombPrefab);
-
         Vector3 bombStart = transform.position;
         bomb.transform.position = bombStart;
-
-        float t = 0f;
-
-        while (t < strikeDelay)
-        {
-            t += Time.deltaTime;
-
-            float u = t / strikeDelay;
-
-            // move bomb toward strike zone
-            bomb.transform.position = Vector3.Lerp(bombStart, strikePos, u);
-
-            // make warning pulse
-            if (warning != null)
-            {
-                float baseSize = strikeRadius * 2f;
-                float pulse = 1f + Mathf.Sin(Time.time * 10f) * 0.15f;
-                warning.transform.localScale = Vector3.one * baseSize * pulse;
-            }
-
-            yield return null;
-        }
-
-        if (bomb != null) Destroy(bomb);
-        if (warning != null) Destroy(warning);
-
-        yield return StartCoroutine(ExplosionFX(strikePos));
-
-        DamagePlayerInZone(strikePos);
-    }
-
-    IEnumerator ExplosionFX(Vector3 strikePos)
-    {
-        GameObject exp = Instantiate(explosionPrefab);
-        exp.transform.position = strikePos;
-
-        float t = 0f;
-        float duration = 0.45f;
-
-        while (t < duration)
-        {
-            t += Time.deltaTime;
-
-            float u = t / duration;
-
-            float scale;
-
-            if (u < 0.5f)
-                scale = Mathf.Lerp(0.2f, strikeRadius * 2f, u * 2f);
-            else
-                scale = Mathf.Lerp(strikeRadius * 2f, 0.1f, (u - 0.5f) * 2f);
-
-            exp.transform.localScale = Vector3.one * scale;
-
-            yield return null;
-        }
-
-        Destroy(exp);
-    }
-
-    void DamagePlayerInZone(Vector3 center)
-    {
-        Collider[] hits = Physics.OverlapSphere(center, strikeRadius);
-
-        foreach (Collider hit in hits)
-        {
-            if (hit.CompareTag("Player"))
-            {
-                Hero hero = hit.GetComponent<Hero>();
-
-                if (hero == null)
-                    hero = hit.GetComponentInParent<Hero>();
-
-                if (hero != null)
-                    hero.TakeDamage(strikeDamage);
-            }
+        Bomb bombScript = bomb.GetComponent<Bomb>();
+        if(bombScript != null){
+            bombScript.strikePos = strikePos;
+            bombScript.strikeDamage = strikeDamage;
+            bombScript.strikeRadius = strikeRadius;
+            bombScript.strikeDelay = strikeDelay;
         }
     }
 

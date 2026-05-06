@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5502461903179999838}
   - component: {fileID: 2709261111319868572}
   - component: {fileID: 5272026681539258420}
-  - component: {fileID: 6751373910711827302}
+  - component: {fileID: 3475467451657917999}
   m_Layer: 9
   m_Name: Explosion
   m_TagString: Untagged
@@ -84,16 +84,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!135 &6751373910711827302
-SphereCollider:
+--- !u!114 &3475467451657917999
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4319215464085065417}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
   m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d200d8b293d37404396b99aedb3f25f2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  strikeRadius: 0

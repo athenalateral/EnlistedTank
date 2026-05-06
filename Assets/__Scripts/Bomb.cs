@@ -1,41 +1,74 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    public float fallSpeed = 20f;
-    public float explosionRadius = 3f;
-    public float damage = 10f;
+    [Header("Inscribed")]
+    public GameObject explosionPrefab;
+
+    [Header("Dynamic")]
+    public float strikeDelay;
+    public float strikeRadius;
+    public float strikeDamage;
+    public Vector3 strikePos;
+
+    private Vector3 bombStart;
+
+    void Start(){
+        bombStart = this.transform.position;
+    }
 
     void Update()
     {
-        transform.position += Vector3.down * fallSpeed * Time.deltaTime;
+        StartCoroutine(BombUpdate());
+    }
 
-        // should use boundary script
-        if (transform.position.y < -20f)
+    IEnumerator BombUpdate()
+    {
+        float t = 0f;
+
+        while (t < strikeDelay)
         {
-            Explode();
+            t += Time.deltaTime;
+
+            float u = t / strikeDelay;
+
+            // move bomb toward strike zone
+            this.transform.position = Vector3.Lerp(bombStart, strikePos, u);
+
+            yield return null;
         }
-    }
 
-    void OnCollisionEnter(Collision coll)
-    {
-        Explode();
-    }
+        DamagePlayerInZone();
 
-    void Explode()
-    {
-        // TODO: Add explosion VFX
-
-        // damage player if nearby
-        Collider[] hits = Physics.OverlapSphere(transform.position, explosionRadius);
-        foreach (Collider c in hits)
-        {
-            if (c.CompareTag("Player"))
-            {
-                Debug.Log("Player hit by bomb!");
-            }
+        // Spawn explosion effect
+        GameObject exp = Instantiate(explosionPrefab);
+        exp.transform.position = strikePos;
+        Explosion expScript = exp.GetComponent<Explosion>();
+        if(expScript != null){
+            expScript.strikeRadius = strikeRadius;
         }
 
         Destroy(gameObject);
+    }
+
+    void DamagePlayerInZone()
+    {
+        Collider[] hits = Physics.OverlapSphere(strikePos, strikeRadius);
+
+        foreach (Collider hit in hits)
+        {
+            if (hit.CompareTag("Player"))
+            {
+                Hero hero = hit.GetComponent<Hero>();
+
+                if (hero == null)
+                    hero = hit.GetComponentInParent<Hero>();
+
+                if (hero != null)
+                    hero.TakeDamage(strikeDamage);
+            }
+        }
     }
 }
