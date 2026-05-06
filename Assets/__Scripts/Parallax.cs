@@ -30,9 +30,10 @@ public class Parallax : MonoBehaviour
         float tY, tX = 0;
         tY = Time.time * scrollSpeed % panelHt + (panelHt * 0.5f);
 
-        if (playerTrans != null) {
-            tX = -playerTrans.transform.position.x * motionMult;
-        }
+        // Horizontal movement is not needed for the ground background. (commented out)
+        // if (playerTrans != null) {
+        //     tX = -playerTrans.transform.position.x * motionMult;
+        // }
 
         panels[0].position = new Vector3(tX, tY, depth);
 
