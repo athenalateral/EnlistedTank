@@ -249,9 +249,14 @@ public class Weapon : MonoBehaviour
 
             Destroy(activeLaser.GetComponent<Collider>());
 
-            Renderer r = activeLaser.GetComponent<Renderer>();
-            if (r != null)
-                r.material.color = def.projectileColor;
+            // Override default primitive cube renderer. It uses a Univeral
+            // Renderer matierial that doesn't render correctly in WebGL builds
+            Renderer laserRend = activeLaser.GetComponent<Renderer>();
+            Renderer projPrefabRend = def.projectilePrefab.GetComponent<Renderer>();
+            if(laserRend != null && projPrefabRend != null){
+                laserRend.material = projPrefabRend.sharedMaterial;
+                laserRend.material.color = def.projectileColor;
+            }
         }
 
         UpdateLaser();
