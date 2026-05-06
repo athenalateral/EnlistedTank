@@ -12,6 +12,11 @@
 /[Uu]ser[Ss]ettings/
 *.log
 
+# WebGL Publisher build files
+/[Ww]eb[Gg][Ll] [Bb]uilds/
+connectwebgl.zip
+webgl_sharing
+
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
 /[Mm]emoryCaptures/
@@ -27,6 +32,9 @@
 
 # Visual Studio cache directory
 .vs/
+
+# Visual Studio Code cache directory
+.vscode/
 
 # Gradle cache directory
 .gradle/

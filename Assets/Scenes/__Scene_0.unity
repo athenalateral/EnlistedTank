@@ -780,7 +780,7 @@ MonoBehaviour:
     damagePerSec: 0
     delayBetweenShots: 0
     velocity: 50
-  powerUpFrequency: 05000000050000000500000005000000010000000100000001000000
+  powerUpFrequency: 01000000010000000200000003000000040000000500000006000000
   scoreText: {fileID: 1999471591}
   musicSource: {fileID: 1364772180}
   backgroundMusic: {fileID: 8300000, guid: 09afb7bb88463b14493054448f42ed30, type: 3}
